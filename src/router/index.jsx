@@ -14,6 +14,7 @@ import {MdSpaceDashboard, MdOutlineHome, MdOutlineFolderOpen, MdSettings, MdOutl
 import { TbLayoutBoard } from 'react-icons/tb'
 import { RiTeamLine } from 'react-icons/ri'
 import { CgProfile } from 'react-icons/cg'
+import TaskList from '../components/container/TaskList';
 
 export const router = createBrowserRouter([
     {
@@ -54,7 +55,7 @@ export const router = createBrowserRouter([
                         children: [
                             {
                                 path: '/projects/:id',
-                                element: <Project />
+                                element: <Project />,
                             }
                         ]
                     },

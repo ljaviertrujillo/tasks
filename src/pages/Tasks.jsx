@@ -1,14 +1,15 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useLocation, useMatch } from "react-router-dom";
+import ProjectData from "../components/container/ProjectData";
 import TaskList from "../components/container/TaskList";
+import { ProjectContext } from "../Provider/ProjectProvider";
 
 const Tasks = () => {
-  const location = useLocation()
-  console.log(location.pathname)
-
 
   return (
-    <TaskList />
+    <div>
+      <TaskList />
+    </div>
   );
 };
 

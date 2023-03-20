@@ -6,8 +6,8 @@ import { SubtaskCompleted, Options } from "./components";
 const SubtaskContent = ({ subtask, remove, complete, edit }) => {
   const { title, completed } = subtask;
   const [options, toggleOptions] = useToggle(false);
-  const [isEdit, toggleIsEdit] = useToggle(false)
-  const subtaskTitleRef = useRef()
+  const [isEdit, toggleIsEdit] = useToggle(false);
+  const subtaskTitleRef = useRef();
 
   useEffect(() => {
     if (isEdit) {
@@ -16,45 +16,48 @@ const SubtaskContent = ({ subtask, remove, complete, edit }) => {
     }
   }, [isEdit]);
 
-  const subtaskCompleted = {
-    color: "#01AD93",
-    textDecoration: "line-through",
-  };
-
-  const subtaskPending = {
-    color: "#282828",
-  };
-
-  let subtaskTitle=''
+  let subtaskTitle = "";
 
   return (
-    <div
-      className={classNames(
-        "subtask d-flex",
-        options ? "justify-content-between" : null
-      )}
-    >
-      <div className="d-flex align-items-center">
-        <SubtaskCompleted handle={complete} completed={completed} />
-        {isEdit ? (
-          <input 
-            type='text' 
-            ref={subtaskTitleRef}
-            value={title}
-            onBlur={toggleIsEdit}
-          />
-        ):(
-          <span
-          className="subtask-title "
-          style={completed ? subtaskCompleted : subtaskPending}
+    <div className="flex my-1">
+      <SubtaskCompleted handle={complete} completed={completed} />
+      <div className={classNames("flex flex-row w-full justify-between h-6 rounded-md", options ? 'bg-dark opacity-70' : null)}>
+        <div
+          className={classNames(
+            "subtask flex w-ful hover:bg-dark hover:opacity-70 w-full cursor-pointer rounded-md transition-all px-1",
+            options ? "justify-between" : "justify-between"
+          )}
           onClick={toggleOptions}
         >
-          {title}
-        </span>
-        )}
-        
+          {isEdit ? (
+            <input
+              type="text"
+              ref={subtaskTitleRef}
+              value={title}
+              onBlur={toggleIsEdit}
+            />
+          ) : (
+            <span
+              className={classNames(
+                completed ? "text-done text line-through" : "text-darkgray"
+              )}
+            >
+              {title[0].toUpperCase() + title.replace(title[0], '')}
+            </span>
+          )}
+        </div>
+        {options ? (
+          <Options
+            trashHandle={remove}
+            isEdit={isEdit}
+            toggleIsEdit={toggleIsEdit}
+            editHandle={edit}
+            title={subtaskTitle}
+            subtask={subtask}
+            options={toggleOptions}
+          />
+        ) : null}
       </div>
-      {options ? <Options trashHandle={remove} isEdit={isEdit} toggleIsEdit={toggleIsEdit} editHandle={edit} title={subtaskTitle} subtask={subtask}/> : null}
     </div>
   );
 };

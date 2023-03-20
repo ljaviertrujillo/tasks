@@ -16,6 +16,9 @@ module.exports = {
       darkgray: '#9ca3af',
       red: '#f87171',
       yellow: '#eab308',
+      done: '#01AD93',
+      pending: '#FD7D7C',
+      working: '#F3D088',
 
 
     },

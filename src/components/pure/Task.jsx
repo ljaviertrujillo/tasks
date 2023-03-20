@@ -10,69 +10,50 @@ import {
   BsChevronCompactUp,
 } from "react-icons/bs";
 import SubtaskList from "../container/SubtaskList";
-import { Duedate } from "./components.jsx";
+import { CloseOptions, Duedate, TaskMenu } from "./components.jsx";
 
 const Task = ({ task, projectId }) => {
   const { title, description, dueDate, status} = task;
   const [showDetails, toggleDetails] = useToggle(false);
-  
- const taskBgColor = (status) => {
-  switch (status) {
-    case 'request':
-      return {
-        backgroundColor: '#FD7D7C'
-      }
-    case 'working':
-      return {
-        backgroundColor: '#F3D088'
-      }
-    case 'done':
-      return {
-        backgroundColor: '#81B38D'
-      }
-  
-    default:
-      return {
-        backgroundColor: '#FD7D7C'
-      }
-  }
- }
+  const [menu, toggleMenu] = useToggle(false)
 
   return (
     <div
       className={classNames(
-        "task d-flex flex-column justify-content-betweem",
-        showDetails ? "expanded" : null
+        "relative task flex flex-col justify-between rounded-2xl bg-primary",
+        showDetails ? "expanded" : status === 'request' ? 'bg-pending' : status === 'working' ? 'bg-working' : 'bg-done'
       )}
-      style={showDetails ? null : taskBgColor(status)}
     >
       <div className="content">
-        <div className="header">
+        <div className={classNames("header p-2 rounded-t-2xl", status === 'request' ? 'bg-pending' : status === 'working' ? 'bg-working' : 'bg-done')}>
           {showDetails ? (
-            <div className="d-flex flex-row justify-content-between">
-              <span className="tag" style={{ backgroundColor: "blue" }}>
+            <div className="flex flex-row justify-between">
+              <span className="text-xs px-2 py-0.5 rounded-full" style={{ backgroundColor: "blue" }}>
                 Design
               </span>
-              <BsThreeDots />
+              <CloseOptions state={menu} handle={toggleMenu} />
             </div>
           ) : null}
-          <h3 className="title">{title}</h3>
+          <h3 className="text-xl">{title[0].toUpperCase() + title.replace(title[0],'')}</h3>
         </div>
-        <div className="body">
+        <div className="body p-2">
             {showDetails ? (
               <div className="info">
-                <p>{description}</p>
+                <p className="text-darkgray">{description[0].toUpperCase() + description.replace(description[0],'')}</p>
                 <SubtaskList projectId={projectId} task={task} />
               </div>
             ) : null}
-            <div className="status d-flex justify-content-end">
+            <div className="status flex justify-end">
             <Duedate dueDate={dueDate}/>
           </div>
         </div>
       </div>
-      <button onClick={toggleDetails}>
+      <button className="flex justify-center p-1 hover:bg-dark hover:bg-opacity-30 rounded-b-2xl transition-colors" onClick={toggleDetails}>
         {showDetails ? <BsChevronCompactUp /> : <BsChevronCompactDown />}
       </button>
+      {menu ? (
+        <TaskMenu status={status} />
+      ) : null}
     </div>
   );
 };

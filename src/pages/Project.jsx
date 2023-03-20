@@ -1,35 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import { addNewTask } from "../firebase/projectController";
+import { initializeProjects } from '../App'
 
 import ProjectDetail from "../components/pure/ProjectDetail";
 import { ProjectContext } from "../Provider/ProjectProvider";
 import { favoriteProject } from "../firebase/projectController";
 import Tasks from "./Tasks";
 import NotFound from "./NotFound";
+import TaskForm from '../components/Form/TaskForm'
+import TaskList from "../components/container/TaskList";
 
 const Project = () => {
   const { state, dispatch } = useContext(ProjectContext);
   const { projects } = state;
-  const [projectFound, setProjectFound] = useState(null);
-  const [tasksFound, setTasksFound] = useState(null)
-  const [isValid, setIsValid] = useState(false);
   const location = useLocation();
-  const projectId = location.pathname.split('/')[2]
-
-  useEffect (() => {
-    if(projects.length > 0) {
-      const isValidProject = projects.some(project => project.id === projectId)
-      if(isValidProject){
-        const project = projects.find(project => project.id === projectId)
-        setProjectFound(project)
-        const {tasks} = project
-        setTasksFound(tasks)
-        setIsValid(true)
-      } else{
-        setIsValid(false)
-      }
-    }
-  }, [projects, projectId])
+  const projectId = location.pathname.split("/")[2];
+  const projectFound = projects.find((project) => project.id === projectId);
+  const isValid = projectFound !== null;
 
   const favProject = async () => {
     const { id, favorite } = projectFound;
@@ -42,12 +30,16 @@ const Project = () => {
 
   return (
     <>
-      {isValid ? projectFound !== null ? (
+      {isValid && projectFound !== undefined ? (
         <div className="project flex flex-col">
           <ProjectDetail project={projectFound} favoriteProject={favProject} />
-          {tasksFound !== null ? <Tasks /> : null }
+          <TaskList />
         </div>
-      ) : <div>Loading...</div> : <NotFound /> }
+      ) : projects.length > 0 ? (
+        <NotFound />
+      ) : (
+        <div>Loading...</div>
+      )}
     </>
   );
 };

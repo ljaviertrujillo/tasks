@@ -1,13 +1,13 @@
-// @mixin transition($property){
-//     transition: $property .2s ease-in-out;
-// }
+@mixin transition($property){
+    transition: $property .2s ease-in-out;
+}
 
-// $backgroundColor: #d1d2d4;
-// $backgroundSecondaryColor: #f4f6f1;
-// $fontColor: #282828;
-// $secFontColor: #949599;
+$backgroundColor: #d1d2d4;
+$backgroundSecondaryColor: #f4f6f1;
+$fontColor: #282828;
+$secFontColor: #949599;
 
-// $interactiveColor: #007cf2;
-// $interactiveSecColor: #F2AA1F;
-// $pendingColor: #FD7D7C;
-// $completedColor: #01AD93;
+$interactiveColor: #007cf2;
+$interactiveSecColor: #F2AA1F;
+$pendingColor: #FD7D7C;
+$completedColor: #01AD93;
