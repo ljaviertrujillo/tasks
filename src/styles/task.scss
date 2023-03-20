@@ -1,0 +1,60 @@
+// @import './commons.scss';
+
+// .task-request, .task-working, .task-done{
+//     margin: 0 .25rem;
+//     width: calc(100%/3);
+//     .task-title{
+//         background-color: $backgroundSecondaryColor;
+//         border-radius: 1rem;
+//         padding: .5rem;
+//         margin-bottom: .55rem;
+//         .status{
+//             font-size: 1.5rem;
+//             font-weight: 600;
+//             cursor: default;
+//         }
+//     }
+// }
+// .task{
+//     min-width: 16rem;
+//     background-color: $pendingColor;
+//     border-radius: 1rem;
+//     transition: all .2s ease-in-out;
+//     margin-bottom: .5rem;
+//     &.expanded{
+//         background-color: $backgroundSecondaryColor;
+//     }
+//     .content{
+//         .header{
+//             border-radius: 1rem 1rem 0 0;
+//             padding: .5rem;
+//             .menu{
+//                 cursor: pointer;
+//                 font-size: 1.5rem;
+//             }
+//             .tag{
+//                 border-radius: 2rem;
+//                 padding: .1rem 1.5rem;
+//                 margin-bottom: .5rem ;
+//                 color: $backgroundSecondaryColor;
+//             }
+//             .title{
+//                 font-size: 2rem;
+//             }
+//         }
+//         .body{
+//             padding: .5rem;
+//             .info{
+//                 .description{
+//                     color: $secFontColor;
+//                     padding: .5rem 0;
+//                 }
+//             }
+//             .status{
+//                 margin: 1rem 0;
+//             }
+//         }
+//     }
+
+// }
+
