@@ -1,5 +1,5 @@
 export const STATUS = {
-    REQUEST: 'request',
-    WORKING: 'working',
+    INQUEUE: 'inqueue',
+    INPROCESS: 'inprocess',
     DONE: 'done'
 }

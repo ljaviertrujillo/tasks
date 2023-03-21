@@ -20,8 +20,9 @@ import {initializeProjects} from '../../App'
 
 const ProjectList = () => {
   const { state, dispatch } = useContext(ProjectContext);
-  const {projects} = state
-  const [showForm, toggleForm] = useToggle(false);
+  const { projects, projectForm } = state
+
+  console.log(projectForm)
   const categories = [
     {
       name: "Favorites",
@@ -47,7 +48,9 @@ const ProjectList = () => {
   const addProject = async project => {
     await addNewProject(project);
     initializeProjects(dispatch)
-    toggleForm();
+    dispatch({
+      type: 'PROJECT_FORM'
+    })
   };
 
   const removeProject = async projectId => {
@@ -57,10 +60,7 @@ const ProjectList = () => {
   
   return (
     <div className="flex flex-col p-4 gap-4">
-      <div className="flex justify-end">
-        <AddButton state={showForm} handle={toggleForm} title={"New Project"} />
-      </div>
-      {showForm ? <ProjectsForm add={addProject} /> : null}
+      {projectForm ? <ProjectsForm add={addProject} /> : null}
         {categories.map((cat, index) => {
           return (
             <div key={index} className="project-content flex flex-col gap-2">

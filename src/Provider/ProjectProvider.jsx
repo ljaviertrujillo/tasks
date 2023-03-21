@@ -1,5 +1,4 @@
-import React, { createContext, useReducer, useEffect } from 'react'
-import { getProjects } from '../firebase/projectController';
+import React, { createContext, useReducer } from 'react'
 import reducer from '../reducer/reducer';
 
 export const ProjectContext = createContext();
@@ -9,7 +8,11 @@ const ProjectContextProvider = ({children}) => {
   const initialState = {
     loading: true,
     projects : [],
-    error: null
+    error: null,
+    projectForm: false,
+    taskForm: false,
+    memberForm: false,
+    tasksView: 'board',
   }
 
   const [state, dispatch] = useReducer(reducer, initialState);

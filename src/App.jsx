@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import { getProjects } from './firebase/projectController';
 import { router } from './router';
-import { RouterProvider } from 'react-router-dom'
+import { RouterProvider, useLocation } from 'react-router-dom'
 import { ProjectContext } from "./Provider/ProjectProvider";
 
 export const initializeProjects = async (dispatch) => {

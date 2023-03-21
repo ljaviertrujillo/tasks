@@ -1,17 +1,17 @@
 export const taskCategories = [
     {
       id: 0,
-      title: "request",
-      hasButton: true,
+      title: "In Queue",
+      status: 'inqueue',
     },
     {
       id: 1,
-      title: "working",
-      hasButton: false,
+      title: "In Process",
+      status: 'inprocess',
     },
     {
       id: 2,
-      title: "done",
-      hasButton: false,
+      title: "Done",
+      status: 'done',
     },
   ];

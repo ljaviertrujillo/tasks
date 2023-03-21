@@ -6,49 +6,46 @@ import { Chart as ChartJS, ArcElement } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import { Link } from "react-router-dom";
 
-import { BsThreeDots, BsCalendarCheck, BsArrowLeftShort } from "react-icons/bs";
+import { BsThreeDots, BsCalendarCheck, BsArrowLeftShort, BsCircle, BsCheck2Circle } from "react-icons/bs";
 import {
-  IoAddCircle,
-  IoCloseCircle,
   IoStarOutline,
   IoStar,
 } from "react-icons/io5";
 import {
+  VscAdd,
   VscClose,
   VscCheck,
   VscTrash,
   VscEdit,
-  VscCircleLarge,
-  VscCircleLargeFilled,
   VscTasklist,
 } from "react-icons/vsc";
+
 import { classNames } from "../../models/classes";
 import { useLocation } from "react-router-dom";
 import { taskCategories } from "../../models/taskCategories";
 
-export const AddButton = ({ state, handle, title }) => {
-  const icon = title === "New Subtask" ? "text-2xl" : "text-3xl";
+export const AddButton = ({ state, handle, title, type }) => {
 
   return (
     <button
       type="button"
       className={classNames(
-        "flex items-center font-semibold rounded-full hover:opacity-70 hover:shadow-md transition-all text-dark",
-        title === "New Project"
-          ? "bg-primary gap-5 px-4 py-1 text-lg"
-          : "gap-2 text-sm bg-secondary px-2 py-0.5"
+        "flex items-center justify-between font-semibold rounded-md hover:opacity-70 hover:shadow-md transition-all text-primary bg-buttonPrimary",
+        type === "large"
+          ? "w-40 py-1.5 px-4 text-lg"
+          : "w-32 py-1 px-2 text-sm "
       )}
       onClick={handle}
     >
       {state ? (
         <>
-          {"Cancel"}
-          <IoCloseCircle className={classNames(icon, "text-red")} />
+          <VscClose />
+          {"Close Form"}
         </>
       ) : (
         <>
+          <VscAdd />
           {title}
-          <IoAddCircle className={classNames(icon, "text-blue")} />
         </>
       )}
     </button>
@@ -104,7 +101,7 @@ export const TaskCounter = ({ status, tasks }) => {
   );
 };
 
-export const SubtasksMenu = ({ subtasks, showForm, toggleForm }) => {
+export const SubtasksMenu = ({ subtasks, subtaskForm, setSubtaskForm }) => {
   const completed = subtasks.filter(
     (subtask) => subtask.completed === true
   ).length;
@@ -112,7 +109,7 @@ export const SubtasksMenu = ({ subtasks, showForm, toggleForm }) => {
 
   return (
     <div className="flex justify-between items-center py-3">
-      <AddButton state={showForm} handle={toggleForm} title="New Subtask" />
+      <AddButton state={subtaskForm} handle={setSubtaskForm} title={"Add Subtask"} type={'small'} />
       <div className="flex gap-2 items-center">
         <span className="text-dark cursor-default">
           {subtaskTotal === 0 ? null : completed + " / " + subtaskTotal}
@@ -140,9 +137,9 @@ export const SubtaskCompleted = ({ completed, handle }) => {
       onClick={handle}
     >
       {completed ? (
-        <VscCircleLargeFilled className="true" />
+        <BsCheck2Circle className="true" />
       ) : (
-        <VscCircleLarge className="false" />
+        <BsCircle className="false" />
       )}
     </button>
   );
@@ -178,7 +175,6 @@ export const Options = ({ trashHandle, editHandle, options }) => {
             onClick={() => {
               trashHandle();
               toggleTrash();
-              options();
             }}
             className={classNames(icon, "hover:text-blue")}
           />
@@ -266,40 +262,74 @@ export const BackButton = () => {
 
 export const CloseOptions = ({ state, handle }) => {
   return (
-    <button type="button" className="text-dark text-xl" onClick={handle}>
+    <button type="button" className="text-dark text-2xl" onClick={handle}>
       {state ? <VscClose /> : <BsThreeDots />}
     </button>
   );
 };
 
-export const TaskMenu = ({ status }) => {
+export const TaskMenu = ({ taskId, taskStatus, remove, changeStatus,setShowMenu }) => {
+
+  const buttonStyle='flex w-full gap-3 items-center my-1'
+  const listStyle = 'my-2 text-darkgray hover:text-dark transition-colors text-xl '
+
   const [change, toggleChange] = useToggle(false)
-  console.log(status)
   return (
-    <ul className="absolute left-0 top-3 bg-blue h-40">
-      <li>Edit</li>
-      <li>Delete</li>
-      <li
-      className="relative bg-primary w-full"
-        onMouseOver={toggleChange}
-        onMouseOut={toggleChange}
-        >
-        Change State
-        {change ? (
-          <ul 
-            className="absolute bg-yellow top-0"
-            style={{right:'-5rem'}}
-            >
-            {taskCategories.map((cat) => {
-              const { id, title } = cat;
-              if (status !== title) {
-                return <li key={id}>{title[0].toUpperCase() + title.replace(title[0], '')}</li>;
-              }
-            })}
-          </ul>
-        ): null}
-        
-      </li>
-    </ul>
+    <nav className="absolute w-44 top-4 p-2 -right-44 -mx-2 bg-primary z-10 rounded-lg">
+      <ul >
+        <li className={listStyle}><button type="button" className={buttonStyle}><VscEdit />Edit</button></li>
+        <li className={listStyle}>
+          <button 
+            type="button" 
+            className={buttonStyle}
+            onClick={() => {remove(taskId); setShowMenu(false)}}
+          >
+            <VscTrash/> Delete
+          </button>
+        </li>
+        <li
+          className={classNames("relative flex items-center gap-3 cursor-default", listStyle)}
+          onMouseOver={toggleChange}
+          onMouseOut={toggleChange}
+          >
+          <BsCircle /> Change State
+          
+          {change ? (
+            <ul 
+              className="absolute rounded-lg w-36 top-0 -right-36 bg-primary "
+              >
+              {taskCategories.map((cat) => {
+                const { id, status, title } = cat;
+                const statusStyle = `text-${status}`
+                if (taskStatus !== status) {
+                  return (
+                    <li key={id} className={listStyle}>
+                      <button 
+                        type="button" 
+                        className={classNames(buttonStyle, 'pl-4')}
+                        onClick={() => {changeStatus(taskId, status); setShowMenu(false) }}
+                        >
+                          <BsCircle className={statusStyle}/>
+                          {title}
+                        </button>
+                    </li>);
+                }
+              })}
+            </ul>
+          ) : null}
+        </li>
+      </ul>
+    </nav>
   );
 };
+
+export const User = ({type}) => {
+  return(
+    <button className={classNames("rounded-full bg-darkgray", type === 'large' ? 'w-12 h-12' : 'w-8 h-8')}>
+      <span className=''>J</span>
+      {type !== 'large' ? (
+        <span>Javier Trujillo</span>
+      ) : null}
+    </button>
+  )
+}

@@ -47,6 +47,20 @@ export const addNewTask = async (projectId, task) => {
     await addDoc(taskRef, newTask)
 }
 
+export const deleteTask = async (projectId, taskId) => {
+    const projectRef = doc(db, 'projects', projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
+    await deleteDoc(taskRef)
+}
+
+export const taskStatus = async (projectId, taskId, status) => {
+    const projectRef = doc(db, 'projects', projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
+    await updateDoc(taskRef, {
+        status: status
+    })
+}
+
 export const addNewSubtask = async (projectId, taskId, subtask) => {
     const newsubtask = JSON.parse(JSON.stringify(subtask));
     const projectRef = doc(db, 'projects', projectId)

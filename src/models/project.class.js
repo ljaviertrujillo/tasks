@@ -1,5 +1,5 @@
 import { STATUS } from './status.enum'
-import { ACTIVE, PRIORITY }  from './priority.enum'
+import { PRIORITY }  from './priority.enum'
 
 export class Project {
     constructor (title, description, dueDate, image) {
@@ -17,7 +17,8 @@ export class Task {
         this.title = title;
         this.description = description;
         this.dueDate  = dueDate;
-        this.status = STATUS.REQUEST;
+        this.status = STATUS.INQUEUE;
+        this.priority = PRIORITY.LOW;
         this.subtasks = [];
         this.members = [];
         this.tag = [];

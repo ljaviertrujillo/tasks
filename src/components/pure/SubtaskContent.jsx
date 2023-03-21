@@ -19,7 +19,7 @@ const SubtaskContent = ({ subtask, remove, complete, edit }) => {
   let subtaskTitle = "";
 
   return (
-    <div className="flex my-1">
+    <div className="flex my-1 gap-2">
       <SubtaskCompleted handle={complete} completed={completed} />
       <div className={classNames("flex flex-row w-full justify-between h-6 rounded-md", options ? 'bg-dark opacity-70' : null)}>
         <div

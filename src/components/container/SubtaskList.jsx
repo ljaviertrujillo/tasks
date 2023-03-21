@@ -1,24 +1,34 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import '../../styles/subtask.scss'
 import SubtaskForm from "../Form/SubtaskForm";
 import SubtaskContent from "../pure/SubtaskContent";
 import { ProjectContext } from "../../Provider/ProjectProvider";
-import useToggle from "../../hooks/useToggle";
 import { SubtasksMenu } from '../pure/components'
 import { addNewSubtask, completedSubtask, deleteSubtask } from "../../firebase/projectController";
 import { initializeProjects } from "../../App";
 
 
-const SubtaskList = ({ projectId, task }) => {
-  const { dispatch } = useContext(ProjectContext);
+const SubtaskList = ({ task }) => {
+  const { state, dispatch } = useContext(ProjectContext);
+  const { projects } = state
+  const [subtaskForm, setSubtaskForm] = useState(false);
+
   const taskId = task.id;
   const { subtasks } = task;
-  const [showSubtaskForm, toggleSubtaskForm] = useToggle(false)
+
+  let projectId = null
+    projects.map(project => {
+      const {tasks} = project
+      let task = tasks.find(task => task.id === taskId)
+      if(task){
+        projectId = project.id
+      }
+    })
 
   const addSubtask = async (subtask) => {
     await addNewSubtask(projectId, taskId, subtask)
     initializeProjects(dispatch)
-    toggleSubtaskForm();
+    setSubtaskForm(!subtaskForm)
   };
 
   const removeSubtask = async (subtaskId) => {
@@ -32,18 +42,13 @@ const SubtaskList = ({ projectId, task }) => {
     initializeProjects(dispatch)
   }
 
-  // const editSubtask = (title, subtask) => {
-  //   console.log(title)
-
-  // }
-
   return (
     <>
       <SubtasksMenu 
         subtasks={subtasks} 
-        showForm={showSubtaskForm} 
-        toggleForm={toggleSubtaskForm} />
-      {showSubtaskForm 
+        subtaskForm={subtaskForm} 
+        setSubtaskForm={() => setSubtaskForm(!subtaskForm)} />
+      {subtaskForm 
         ? <SubtaskForm add={addSubtask}/> 
         : null}
       {subtasks.map((subtask, index) => {

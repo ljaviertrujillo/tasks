@@ -17,8 +17,9 @@ module.exports = {
       red: '#f87171',
       yellow: '#eab308',
       done: '#01AD93',
-      pending: '#FD7D7C',
+      request: '#FD7D7C',
       working: '#F3D088',
+      buttonPrimary: '#15607B'
 
 
     },

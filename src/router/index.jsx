@@ -10,10 +10,9 @@ import Signup from '../pages/SignUp';
 import NotFound from '../pages/NotFound'
 
 //icons
-import {MdSpaceDashboard, MdOutlineHome, MdOutlineFolderOpen, MdSettings, MdOutlinePowerSettingsNew} from 'react-icons/md'
+import {MdSpaceDashboard, MdOutlineHome, MdOutlineFolderOpen, MdSettings} from 'react-icons/md'
 import { TbLayoutBoard } from 'react-icons/tb'
 import { RiTeamLine } from 'react-icons/ri'
-import { CgProfile } from 'react-icons/cg'
 import TaskList from '../components/container/TaskList';
 
 export const router = createBrowserRouter([
@@ -25,6 +24,10 @@ export const router = createBrowserRouter([
             {
                 errorElement: <NotFound />,
                 children: [
+                    {
+                        index: true,
+                        element: <Home />,
+                    },
                     {
                         path: '/login',
                         element: <Login />
@@ -46,8 +49,8 @@ export const router = createBrowserRouter([
                 errorElement:<NotFound />,
                 children: [
                     {
-                        index: true,
-                        element: <Home />,
+                        path: '/dashboard',
+                        element: <div></div>,
                     },
                     {
                         path:'/projects',
@@ -63,12 +66,18 @@ export const router = createBrowserRouter([
                         path: '/tasks',
                         element: <Tasks />,
                     },
-
+                    {
+                        path: '/team',
+                        element: <div></div>
+                    },
+                    {
+                        path: '/settings',
+                        element: <div></div>,
+                    },
                 ]
             }
         ]
     }
-
 ])
 
 export const features = [
@@ -78,6 +87,13 @@ export const features = [
       label: 'Home',
       url: '/',
       subMenuIcon: false
+    },
+    {
+        id:'2',
+        icon: MdSpaceDashboard,
+        label: 'Dashboard',
+        url: '/dashboard',
+        subMenuIcon: false,
     },
     {
       id: '3',
@@ -93,18 +109,21 @@ export const features = [
       url: '/tasks',
       subMenuIcon: true
     },
+    {
+        id:'5',
+        icon: RiTeamLine,
+        label: 'Team',
+        url: '/team',
+        subMenuIcon: false
+    },
   ]
 
-export const card = {
-  id: 'card01',
-  displayName: 'Javier Trujillo',
-  photoUrl: '',
-  url: '/profile',
-  label: 'Profile',
-  icon: CgProfile
-}
-
-export const logout = {
-  label: 'Log Out',
-  icon: MdOutlinePowerSettingsNew
-}
+  export const settings = [
+    {
+        id: '6',
+        icon: MdSettings,
+        label: 'Settings',
+        url: '/settings',
+        subMenuIcon: false,
+      },
+  ]

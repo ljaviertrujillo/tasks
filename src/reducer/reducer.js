@@ -1,21 +1,55 @@
 const GET_PROJECTS = "GET_PROJECTS";
-const GET_TASKS = 'GET_TASKS'
-const GET_SUBTASKS = 'GET_SUBTASKS'
-const EDIT_PROJECT = "EDIT_PROJECT";
-const EDIT_TASK = "EDIT_TASK";
-const EDIT_SUBTASK = "EDIT_SUBTASK";
+const PROJECT_FORM = 'PROJECT_FORM';
+const TASK_FORM = 'TASK_FORM';
+const MEMBER_FORM = 'MEMBER_FORM';
+const RESET_FORMS = 'RESET_FORMS';
+const TASKS_VIEW = 'TASKS_VIEW';
+const RESET_VIEW = 'RESET_VIEW';
 const FAVORITE_PROJECT = "FAVORITE_PROJECT";
 const TASK_STATE = "TASK_STATE";
-const FETCH_ERROR = 'FETCH_ERROR'
+const FETCH_ERROR = 'FETCH_ERROR';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
     case GET_PROJECTS:
       return {
+        ...state,
           loading: false,
           projects: action.payload,
           error: null
       };
+    case PROJECT_FORM:
+      return {
+        ...state,
+        projectForm: !state.projectForm
+      }
+    case TASK_FORM:
+      return {
+        ...state,
+        taskForm: !state.taskForm
+      }
+    case MEMBER_FORM:
+      return {
+        ...state,
+        memberForm: !state.memberForm
+      }
+    case RESET_FORMS:
+      return{
+        ...state,
+        projectForm: false,
+        taskForm: false,
+        memberForm: false,
+      }
+    case TASKS_VIEW:
+      return {
+        ...state,
+        tasksView: action.payload
+      }
+    case RESET_VIEW:
+      return{
+        ...state,
+        tasksView: 'board'
+      }
     case FAVORITE_PROJECT:
       return {
         ...state,
@@ -53,6 +87,7 @@ const reducer = (state = [], action) => {
       };
     case FETCH_ERROR:
       return {
+        ...state,
           loading: false,
           projects: [],
           error: action.payload
