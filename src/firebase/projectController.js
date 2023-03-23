@@ -40,47 +40,47 @@ export const favoriteProject = async (id, favorite) => {
     })
 }
 
-export const addNewTask = async (projectId, task) => {
-    const projectRef = doc(db, 'projects', projectId)
+export const addNewTask = async (task) => {
+    const projectRef = doc(db, 'projects', task.projectId)
     const taskRef = collection(projectRef, 'tasks')
     const newTask = JSON.parse(JSON.stringify(task))
     await addDoc(taskRef, newTask)
 }
 
-export const deleteTask = async (projectId, taskId) => {
-    const projectRef = doc(db, 'projects', projectId)
-    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
+export const deleteTask = async (task) => {
+    const projectRef = doc(db, 'projects', task.projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), task.id)
     await deleteDoc(taskRef)
 }
 
-export const taskStatus = async (projectId, taskId, status) => {
-    const projectRef = doc(db, 'projects', projectId)
-    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
+export const taskStatus = async (task, status) => {
+    const projectRef = doc(db, 'projects', task.projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), task.id)
     await updateDoc(taskRef, {
         status: status
     })
 }
 
-export const addNewSubtask = async (projectId, taskId, subtask) => {
+export const addNewSubtask = async (subtask) => {
     const newsubtask = JSON.parse(JSON.stringify(subtask));
-    const projectRef = doc(db, 'projects', projectId)
-    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
+    const projectRef = doc(db, 'projects', subtask.projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), subtask.taskId)
     const subtaskRef = collection(taskRef, 'subtasks')
     await addDoc(subtaskRef, newsubtask)
 }
 
-export const deleteSubtask = async (projectId, taskId, subtaskId) => {
-    const projectRef = doc(db, 'projects', projectId)
-    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
-    const subtaskRef = doc(collection(taskRef, 'subtasks'), subtaskId)
+export const deleteSubtask = async (subtask) => {
+    const projectRef = doc(db, 'projects', subtask.projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), subtask.taskId)
+    const subtaskRef = doc(collection(taskRef, 'subtasks'), subtask.id)
     await deleteDoc(subtaskRef)
 }
 
-export const completedSubtask = async (projectId, taskId ,subtaskId, completed) => {
-    const projectRef = doc(db, 'projects', projectId)
-    const taskRef = doc(collection(projectRef, 'tasks'), taskId)
-    const subtaskRef = doc(collection(taskRef, 'subtasks'), subtaskId)
+export const completedSubtask = async (subtask) => {
+    const projectRef = doc(db, 'projects', subtask.projectId)
+    const taskRef = doc(collection(projectRef, 'tasks'), subtask.taskId)
+    const subtaskRef = doc(collection(taskRef, 'subtasks'), subtask.id)
     await updateDoc(subtaskRef, {
-        completed: !completed
+        completed: !subtask.completed
     })
 }

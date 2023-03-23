@@ -1,5 +1,4 @@
 import React from "react";
-import "../../styles/components.scss";
 import useToggle from "../../hooks/useToggle";
 useToggle;
 import { Chart as ChartJS, ArcElement } from "chart.js";
@@ -19,10 +18,11 @@ import {
   VscEdit,
   VscTasklist,
 } from "react-icons/vsc";
+import {FcHighPriority, FcLowPriority, FcMediumPriority } from 'react-icons/fc'
 
 import { classNames } from "../../models/classes";
-import { useLocation } from "react-router-dom";
 import { taskCategories } from "../../models/taskCategories";
+import dayjs from "dayjs";
 
 export const AddButton = ({ state, handle, title, type }) => {
 
@@ -73,12 +73,7 @@ export const FavoriteIcon = ({ favorite }) => {
 };
 
 export const Duedate = ({ dueDate }) => {
-  const date = new Date(dueDate);
-  const month = date.toLocaleString("default", { month: "short" });
-  const formattedDate = `${month}/${date
-    .getDate()
-    .toString()
-    .padStart(2, "0")}`;
+  const formattedDate = dayjs(dueDate).format('MMM/DD/YY')
 
   return (
     <div className="flex items-center gap-2 text-md cursor-default">
@@ -101,7 +96,7 @@ export const TaskCounter = ({ status, tasks }) => {
   );
 };
 
-export const SubtasksMenu = ({ subtasks, subtaskForm, setSubtaskForm }) => {
+export const SubtasksMenu = ({ subtasks, subtaskForm, showSubtaskForm }) => {
   const completed = subtasks.filter(
     (subtask) => subtask.completed === true
   ).length;
@@ -109,7 +104,7 @@ export const SubtasksMenu = ({ subtasks, subtaskForm, setSubtaskForm }) => {
 
   return (
     <div className="flex justify-between items-center py-3">
-      <AddButton state={subtaskForm} handle={setSubtaskForm} title={"Add Subtask"} type={'small'} />
+      <AddButton state={subtaskForm} handle={showSubtaskForm} title={"Add Subtask"} type={'small'} />
       <div className="flex gap-2 items-center">
         <span className="text-dark cursor-default">
           {subtaskTotal === 0 ? null : completed + " / " + subtaskTotal}
@@ -260,31 +255,42 @@ export const BackButton = () => {
   );
 };
 
-export const CloseOptions = ({ state, handle }) => {
+export const CloseOptions = ({ handle }) => {
   return (
     <button type="button" className="text-dark text-2xl" onClick={handle}>
-      {state ? <VscClose /> : <BsThreeDots />}
+      <BsThreeDots />
     </button>
   );
 };
 
-export const TaskMenu = ({ taskId, taskStatus, remove, changeStatus,setShowMenu }) => {
+export const TaskMenu = ({ task, remove, changeStatus, setShowMenu }) => {
 
-  const buttonStyle='flex w-full gap-3 items-center my-1'
-  const listStyle = 'my-2 text-darkgray hover:text-dark transition-colors text-xl '
+  const buttonStyle='flex w-full gap-3 items-center my-1 justify-end'
+  const listStyle = 'my-2 text-darkgray hover:text-dark transition-colors text-xl justify-end '
 
   const [change, toggleChange] = useToggle(false)
   return (
-    <nav className="absolute w-44 top-4 p-2 -right-44 -mx-2 bg-primary z-10 rounded-lg">
-      <ul >
-        <li className={listStyle}><button type="button" className={buttonStyle}><VscEdit />Edit</button></li>
+    <nav className="absolute w-44 top-4 p-2 right-10 -mx-2 bg-secondary z-10 rounded-lg">
+    <button
+      type="button"
+      onClick={() => setShowMenu(false)}
+      className={classNames(buttonStyle, 'text-darkgray hover:text-buttonPrimary transition-colors')}
+    >
+      <VscClose size={26}/>
+    </button>
+      <ul>
+        <li className={listStyle}>
+          <button type="button" className={buttonStyle}>
+            Edit<VscEdit />
+          </button>
+        </li>
         <li className={listStyle}>
           <button 
             type="button" 
             className={buttonStyle}
-            onClick={() => {remove(taskId); setShowMenu(false)}}
+            onClick={() => {remove(task); setShowMenu(false)}}
           >
-            <VscTrash/> Delete
+             Delete<VscTrash/>
           </button>
         </li>
         <li
@@ -292,25 +298,25 @@ export const TaskMenu = ({ taskId, taskStatus, remove, changeStatus,setShowMenu 
           onMouseOver={toggleChange}
           onMouseOut={toggleChange}
           >
-          <BsCircle /> Change State
+           Change State<BsCircle />
           
           {change ? (
             <ul 
-              className="absolute rounded-lg w-36 top-0 -right-36 bg-primary "
+              className="absolute rounded-lg w-36 -top-9 -left-36 bg-secondary "
               >
               {taskCategories.map((cat) => {
                 const { id, status, title } = cat;
                 const statusStyle = `text-${status}`
-                if (taskStatus !== status) {
+                if (task.status !== status) {
                   return (
                     <li key={id} className={listStyle}>
                       <button 
                         type="button" 
                         className={classNames(buttonStyle, 'pl-4')}
-                        onClick={() => {changeStatus(taskId, status); setShowMenu(false) }}
+                        onClick={() => {changeStatus(task, status); setShowMenu(false) }}
                         >
-                          <BsCircle className={statusStyle}/>
                           {title}
+                          <BsCircle className={statusStyle}/>
                         </button>
                     </li>);
                 }
@@ -325,11 +331,27 @@ export const TaskMenu = ({ taskId, taskStatus, remove, changeStatus,setShowMenu 
 
 export const User = ({type}) => {
   return(
-    <button className={classNames("rounded-full bg-darkgray", type === 'large' ? 'w-12 h-12' : 'w-8 h-8')}>
-      <span className=''>J</span>
+    <button type="button" className="flex items-center gap-3">
+      <div className={classNames("flex items-center justify-center rounded-full bg-darkgray", type === 'large' ? 'h-12 w-12' : 'w-8 h-8')}>J</div>
       {type !== 'large' ? (
         <span>Javier Trujillo</span>
       ) : null}
     </button>
   )
+}
+
+export const Tag = ({title, bg, color, priority}) => {
+  return (
+    <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-${bg} text-${color}`}>
+    {priority === 'low' 
+      ? <FcLowPriority size={16} />  
+      : priority === 'medium'
+        ? <FcMediumPriority size={16} />
+        : priority === 'high'
+          ? <FcHighPriority size={16} />
+          : null}
+    {title}
+  </span>
+  )
+
 }

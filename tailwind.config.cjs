@@ -14,11 +14,11 @@ module.exports = {
       slate: '#9ca3af',
       lightgray:'#e5e7eb',
       darkgray: '#9ca3af',
-      red: '#f87171',
+      red: '#FD7D7C',
       yellow: '#eab308',
       done: '#01AD93',
-      request: '#FD7D7C',
-      working: '#F3D088',
+      inqueue: '#FD7D7C',
+      inprocess: '#F3D088',
       buttonPrimary: '#15607B'
 
 

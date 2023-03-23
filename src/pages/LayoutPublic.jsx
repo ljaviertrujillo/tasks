@@ -1,7 +1,5 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import Nav from "../components/container/Nav";
-import '../styles/logs.scss'
 
 const LayoutPublic = () => {
   return (

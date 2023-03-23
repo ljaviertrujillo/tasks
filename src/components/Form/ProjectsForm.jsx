@@ -7,10 +7,12 @@ import { Project } from '../../models/project.class'
 import { VscSave } from "react-icons/vsc";
 
 const ProjectsForm = ( { add } ) => {
+    const today = new Date().toISOString().slice(0, 10)
     const initialValues = {
         title:'',
         description:'',
-        dueDate:'',
+        dueDate: '',
+        lastUpdate: today,
         image: '',
     }
 
@@ -18,6 +20,7 @@ const ProjectsForm = ( { add } ) => {
         title: Yup.string().required("Title is required"),
         description: Yup.string().required("Description is required"),
         dueDate: Yup.date().required('Due date is required'),
+        lastUpdate : Yup.date()
     })
 
   return (
@@ -29,7 +32,7 @@ const ProjectsForm = ( { add } ) => {
                 values.title,
                 values.description,
                 values.dueDate,
-                ''
+                today
             )
             resetForm()
             add(project)
@@ -55,6 +58,7 @@ const ProjectsForm = ( { add } ) => {
                 <Field 
                     type='date'
                     name='dueDate'
+                    min={today}
                     required/>
                     
                 <button

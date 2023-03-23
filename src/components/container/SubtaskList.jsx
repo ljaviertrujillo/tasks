@@ -1,5 +1,4 @@
 import React, { useContext, useState } from "react";
-import '../../styles/subtask.scss'
 import SubtaskForm from "../Form/SubtaskForm";
 import SubtaskContent from "../pure/SubtaskContent";
 import { ProjectContext } from "../../Provider/ProjectProvider";
@@ -10,36 +9,33 @@ import { initializeProjects } from "../../App";
 
 const SubtaskList = ({ task }) => {
   const { state, dispatch } = useContext(ProjectContext);
-  const { projects } = state
-  const [subtaskForm, setSubtaskForm] = useState(false);
-
+  const {subtaskForm } = state;
   const taskId = task.id;
   const { subtasks } = task;
 
-  let projectId = null
-    projects.map(project => {
-      const {tasks} = project
-      let task = tasks.find(task => task.id === taskId)
-      if(task){
-        projectId = project.id
-      }
-    })
-
   const addSubtask = async (subtask) => {
-    await addNewSubtask(projectId, taskId, subtask)
+    const projectId = task.projectId
+    subtask.projectId = projectId
+    subtask.taskId = taskId
+    await addNewSubtask(subtask)
     initializeProjects(dispatch)
-    setSubtaskForm(!subtaskForm)
+    showSubtaskForm()
   };
 
-  const removeSubtask = async (subtaskId) => {
-    await deleteSubtask(projectId, taskId,subtaskId)
+  const removeSubtask = async (subtask) => {
+    await deleteSubtask(subtask)
     initializeProjects(dispatch)
   };
 
-  const completeSubtask = async (subtaskId) => {
-    const completed = subtasks.find(subtask => subtask.id === subtaskId).completed
-    await completedSubtask(projectId, taskId, subtaskId,completed)
+  const completeSubtask = async (subtask) => {
+    await completedSubtask(subtask)
     initializeProjects(dispatch)
+  }
+
+  const showSubtaskForm = () => {
+    dispatch({
+      type: 'SUBTASK_FORM'
+    })
   }
 
   return (
@@ -47,7 +43,7 @@ const SubtaskList = ({ task }) => {
       <SubtasksMenu 
         subtasks={subtasks} 
         subtaskForm={subtaskForm} 
-        setSubtaskForm={() => setSubtaskForm(!subtaskForm)} />
+        showSubtaskForm={showSubtaskForm} />
       {subtaskForm 
         ? <SubtaskForm add={addSubtask}/> 
         : null}
@@ -56,8 +52,8 @@ const SubtaskList = ({ task }) => {
           <SubtaskContent
             key={index}
             subtask={subtask}
-            complete={() => completeSubtask(subtask.id)}
-            remove={() => removeSubtask(subtask.id)}
+            complete={() => completeSubtask(subtask)}
+            remove={() => removeSubtask(subtask)}
           />
         );
       })}

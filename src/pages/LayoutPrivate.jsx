@@ -1,15 +1,9 @@
-import React, { useContext } from 'react'
-import { getProjects } from '../firebase/projectController'
 import SideBarMenu from '../components/container/SideBarMenu'
 import { Outlet } from 'react-router-dom'
 import Nav from '../components/container/Nav'
 import Footer from './Footer'
 
-import { ProjectContext } from '../Provider/ProjectProvider'
-
-
 const LayoutPrivate = () => {
-  const { dispatch } = useContext(ProjectContext)
 
   return (
     <>

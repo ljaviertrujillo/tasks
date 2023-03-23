@@ -16,7 +16,7 @@ const Project = () => {
   const { state, dispatch } = useContext(ProjectContext);
   const { projects } = state;
   const location = useLocation();
-  const projectId = location.pathname.split("/")[2];
+  const projectId = location.state;
   const projectFound = projects.find((project) => project.id === projectId);
   const isValid = projectFound !== null;
 

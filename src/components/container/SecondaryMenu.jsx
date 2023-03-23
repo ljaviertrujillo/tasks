@@ -68,7 +68,18 @@ const SecondaryMenu = () => {
           >
             List
           </button>
+          
         </li>
+        <li>
+          <button
+            type="button"
+            onClick={() => handleTaskView("calendar")}
+            className={buttonStyles("calendar")}
+          >
+            Calendar
+          </button>
+        </li>
+
         {location.pathname !== "/tasks" ? (
           <li>
             <button 

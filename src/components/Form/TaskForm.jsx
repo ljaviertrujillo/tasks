@@ -6,16 +6,17 @@ import * as Yup from "yup";
 import { VscSave } from "react-icons/vsc";
 
 const TaskForm = ({ add }) => {
+  const today = new Date().toISOString().slice(0, 10)
   const initialValues = {
     title: "",
-    description: "",
     dueDate: "",
+    lastUpdate: today,
   };
 
   const taskSchema = Yup.object().shape({
     title: Yup.string().required("Title is required"),
-    description: Yup.string().required("Description is required"),
     dueDate: Yup.date(),
+    lastUpdate: Yup.date()
   });
 
   return (
@@ -25,8 +26,8 @@ const TaskForm = ({ add }) => {
       onSubmit={(values, { resetForm }) => {
         const newTask = new Task (
           values.title,
-          values.description,
-          values.dueDate
+          values.dueDate,
+          today
         );
         resetForm();
         add(newTask);
@@ -44,15 +45,10 @@ const TaskForm = ({ add }) => {
             
           </div>
           <div className="formBody">
-            <Field
-              type="text"
-              name="description"
-              placeholder="Task Description"
-              className="form-control formTaskDescription"
-            />
-    
+
             <div className="formDueDate">
-              <Field type="date" name="dueDate" className="form-control" />
+              <Field type="date" name="dueDate" className="form-control"
+              min={today} />
             </div>
           </div>
           <button

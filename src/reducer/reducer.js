@@ -1,12 +1,14 @@
 const GET_PROJECTS = "GET_PROJECTS";
 const PROJECT_FORM = 'PROJECT_FORM';
 const TASK_FORM = 'TASK_FORM';
+const SUBTASK_FORM = 'SUBTASK_FORM';
 const MEMBER_FORM = 'MEMBER_FORM';
 const RESET_FORMS = 'RESET_FORMS';
 const TASKS_VIEW = 'TASKS_VIEW';
 const RESET_VIEW = 'RESET_VIEW';
 const FAVORITE_PROJECT = "FAVORITE_PROJECT";
 const TASK_STATE = "TASK_STATE";
+const EXPAND_TASK = 'EXPAND_TASK';
 const FETCH_ERROR = 'FETCH_ERROR';
 
 const reducer = (state = [], action) => {
@@ -27,6 +29,11 @@ const reducer = (state = [], action) => {
       return {
         ...state,
         taskForm: !state.taskForm
+      }
+    case SUBTASK_FORM:
+      return {
+        ...state,
+        subtaskForm: !state.subtaskForm
       }
     case MEMBER_FORM:
       return {

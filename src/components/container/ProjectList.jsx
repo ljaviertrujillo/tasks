@@ -1,8 +1,6 @@
 import React, { useContext } from "react";
-import "../../styles/projects.scss";
 import { Link } from "react-router-dom";
 import ProjectsForm from "../Form/ProjectsForm";
-import useToggle from "../../hooks/useToggle";
 
 import { ProjectContext } from "../../Provider/ProjectProvider";
 

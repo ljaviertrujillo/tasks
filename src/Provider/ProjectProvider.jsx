@@ -11,6 +11,7 @@ const ProjectContextProvider = ({children}) => {
     error: null,
     projectForm: false,
     taskForm: false,
+    subtaskForm: false,
     memberForm: false,
     tasksView: 'board',
   }
